@@ -15,16 +15,10 @@ int main(int argc, char* argv[])
   // Convert the command-line arguments into a more easily usable form
   const std::vector<std::string> cmdLineArgs {argv, argv+argc};
 
-  // Options that might be set by the command-line arguments
-  bool helpRequested {false};
-  bool versionRequested {false};
-  std::string inputFile {""};
-  std::string outputFile {""};
-  std::string cipher_key {""};
-  bool encrypt {true};
+  ProgramSettings settings{false,false,"","","",true};
 
   // Process command line arguments
-  bool cmdLineStatus { processCommandLine(cmdLineArgs, helpRequested, versionRequested, inputFile, outputFile, cipher_key, encrypt) };
+  bool cmdLineStatus { processCommandLine(cmdLineArgs, settings) };
 
   // Any failure in the argument processing means we can't continue
   // Use a non-zero return value to indicate failure
@@ -33,7 +27,7 @@ int main(int argc, char* argv[])
   }
 
   // Handle help, if requested
-  if (helpRequested) {
+  if (settings.helpRequested) {
     // Line splitting for readability
     std::cout
       << "Usage: mpags-cipher [-i <file>] [-o <file>] [-k <key>] [--encrypt/--decrypt]\n\n"
@@ -55,7 +49,7 @@ int main(int argc, char* argv[])
   }
 
   // Handle version, if requested
-  if (versionRequested) {
+  if (settings.versionRequested) {
     std::cout << "0.2.0" << std::endl;
     // Like help, requires no further action, so return from main,
     // with 0 used to indicate success
@@ -67,12 +61,12 @@ int main(int argc, char* argv[])
   std::string inputText {""};
 
   // Read in user input from stdin/file
-  if (!inputFile.empty()) {
+  if (!settings.inputFile.empty()) {
 
     // Open the file and check that we can read from it
-    std::ifstream inputStream(inputFile);
+    std::ifstream inputStream(settings.inputFile);
     if (!inputStream.good()) {
-      std::cerr << "[error] failed to create istream on file '" << inputFile << "'" << std::endl;
+      std::cerr << "[error] failed to create istream on file '" << settings.inputFile << "'" << std::endl;
       return 1;
     }
 
@@ -95,7 +89,7 @@ int main(int argc, char* argv[])
   // We have the key as a string, but the Caesar cipher needs an unsigned long, so we first need to convert it
   // We default to having a key of 0, i.e. no encryption, if no key was provided on the command line
   size_t caesar_key {0};
-  if ( ! cipher_key.empty() ) {
+  if ( ! settings.cipher_key.empty() ) {
     // Before doing the conversion we should check that the string contains a
     // valid positive integer.
     // Here we do that by looping through each character and checking that it
@@ -107,26 +101,26 @@ int main(int argc, char* argv[])
     // handled that instead but we only cover exceptions very briefly on the
     // final day of this course - they are a very complex area of C++ that
     // could take an entire course on their own!)
-    for ( const auto& elem : cipher_key ) {
+    for ( const auto& elem : settings.cipher_key ) {
       if ( ! std::isdigit(elem) ) {
 	std::cerr << "[error] cipher key must be an unsigned long integer for Caesar cipher,\n"
-	          << "        the supplied key (" << cipher_key << ") could not be successfully converted" << std::endl;
+	          << "        the supplied key (" << settings.cipher_key << ") could not be successfully converted" << std::endl;
 	return 1;
       }
     }
-    caesar_key = std::stoul(cipher_key);
+    caesar_key = std::stoul(settings.cipher_key);
   }
 
   // Run the Caesar cipher (using the specified key and encrypt/decrypt flag) on the input text
-  std::string outputText { runCaesarCipher( inputText, caesar_key, encrypt ) };
+  std::string outputText { runCaesarCipher( inputText, caesar_key, settings.encrypt ) };
 
   // Output the transliterated text
-  if (!outputFile.empty()) {
+  if (!settings.outputFile.empty()) {
 
     // Open the file and check that we can write to it
-    std::ofstream outputStream(outputFile);
+    std::ofstream outputStream(settings.outputFile);
     if (!outputStream.good()) {
-      std::cerr << "[error] failed to create ostream on file '" << outputFile << "'" << std::endl;
+      std::cerr << "[error] failed to create ostream on file '" << settings.outputFile << "'" << std::endl;
       return 1;
     }
 
