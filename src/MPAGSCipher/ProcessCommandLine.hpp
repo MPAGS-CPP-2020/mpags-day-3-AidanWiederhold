@@ -12,7 +12,7 @@ struct ProgramSettings{
     std::string inputFile;
     std::string outputFile;
     std::string cipher_key;
-    CipherMode encrypt;
+    CipherMode cipherMode;
 };
 
 bool processCommandLine(const std::vector<std::string>& args,

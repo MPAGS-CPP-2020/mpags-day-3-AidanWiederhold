@@ -7,7 +7,7 @@
 // Our project headers
 #include "TransformChar.hpp"
 #include "ProcessCommandLine.hpp"
-#include "RunCaesarCipher.hpp"
+//#include "RunCaesarCipher.hpp" //Don't actually need this anymore
 #include "CaesarCipher.hpp"
 #include "CipherMode.hpp"
   
@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
   // We have the key as a string, but the Caesar cipher needs an unsigned long, so we first need to convert it
   // We default to having a key of 0, i.e. no encryption, if no key was provided on the command line
   CaesarCipher caesar{settings.cipher_key};
-  std::string outputText { caesar.applyCipher(inputText, settings.encrypt) };
+  std::string outputText { caesar.applyCipher(inputText, settings.cipherMode) };
   
   // Output the transliterated text
   if (!settings.outputFile.empty()) {

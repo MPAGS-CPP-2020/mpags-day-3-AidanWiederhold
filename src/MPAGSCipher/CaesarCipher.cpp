@@ -66,6 +66,7 @@ std::string CaesarCipher::applyCipher(const std::string& inputText, const Cipher
                     processedChar = alphabet_[ (i + alphabetSize_ - key_) % alphabetSize_ ];
                     break;
             }
+        break;
 	    }
     }
 

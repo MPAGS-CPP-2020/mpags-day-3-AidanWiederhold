@@ -11,7 +11,7 @@ class CaesarCipher{
         explicit CaesarCipher(const size_t& cipherKey);
         explicit CaesarCipher(const std::string& cipherKey);
 
-        std::string applyCipher(const std::string& inputText, const CipherMode encrypt) const;
+        std::string applyCipher(const std::string& inputText, const CipherMode cipherMode) const;
         
     private:
         const std::vector<char> alphabet_;
