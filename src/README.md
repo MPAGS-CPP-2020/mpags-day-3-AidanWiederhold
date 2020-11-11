@@ -114,7 +114,7 @@ follows:
 ```
 
 # Testing
-Testing has been implemented using Catch for the three sub-programmes of this package: `ProcessCommandLine`, `TransformChar.cpp` and `CaesarCipher.cpp`.
+Testing has been implemented using Catch for the three sub-programmes of this package: `ProcessCommandLine.cpp`, `TransformChar.cpp` and `CaesarCipher.cpp`.
 
 The testing framework is built at the same time as the programme itself and can be run, while within the build directory, by using `make test` or `ctest -V`.
 
