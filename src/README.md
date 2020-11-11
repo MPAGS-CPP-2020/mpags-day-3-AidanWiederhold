@@ -113,6 +113,11 @@ follows:
     └── mpags-cipher.cpp            Main program C++ source file
 ```
 
+# Testing
+Testing has been implemented using Catch for the three sub-programmes of this package: `ProcessCommandLine`, `TransformChar.cpp` and `CaesarCipher.cpp`.
+
+The testing framework is built at the same time as the programme itself and can be run, while within the build directory, by using `make test` or `ctest -V`.
+
 # Copying
 `mpags-cipher` is licensed under the terms of the MIT License. Please see
 the file [`LICENSE`](LICENSE) for full details.
